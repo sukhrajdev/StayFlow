@@ -1,0 +1,24 @@
+{
+  "name": "stayflow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sukhrajdev/StayFlow.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/sukhrajdev/StayFlow/issues"
+  },
+  "homepage": "https://github.com/sukhrajdev/StayFlow#readme",
+  "dependencies": {
+    "typescript": "^5.9.3"
+  }
+}
