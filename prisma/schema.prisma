@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ROLE {
+  ADMIN
+  HOTEL_OWNER
+  CUSTOMER
+}
+
+enum STATUS {
+  ACTIVE
+  BANNED
+  SUSPENDED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  password     String
+  isVerified   Boolean  @default(false)
+  role         ROLE     @default(CUSTOMER)
+  status       STATUS   @default(ACTIVE)
+  refreshToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("user")
+  @@index([status, role])
+  hotels Hotel[]
+}
+
+model Hotel {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  description  String?  @db.Text
+  location     String
+  city         String
+  rating       Float    @default(0.0)
+  contactEmail String
+  contactPhone String
+  imageUrl     String?
+  ownerId      String
+  owner        User     @relation(fields: [ownerId], references: [id])
+  rooms        Room[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("hotels")
+  @@index([name])
+  @@index([city, rating])
+  @@index([ownerId])
+}
+
+model Room {
+  id          String   @id @default(cuid())
+  roomNumber  String
+  type        String
+  price       Int
+  isBooked    Boolean  @default(false)
+  rating      Float    @default(0.0)
+  image       String?
+  hotelId     String
+  hotel       Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("rooms")
+  @@index([hotelId])
+  @@index([price, isBooked])
+}
