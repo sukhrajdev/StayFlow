@@ -15,3 +15,14 @@ Content-Type: application/json
     "email":"testgmil@gmail.com",
     "password":"rajtest56"
 }
+
+### GET Profile
+
+GET http://localhost:3000/api/v1/auth/me
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM1NTQ5ODU2LWFkZGYtNDcxYy04OGU2LTQxMDVjM2ExZTcyMSIsImlhdCI6MTc3MDA0MzczNiwiZXhwIjoxNzcwMTMwMTM2fQ.mOx_mhe79mr3mdL0WaPPVH_KC6ur7zMT7JtFGp6Vyuk; Max-Age=86400; Path=/; Expires=Tue, 03 Feb 2026 14:48:56 GMT; HttpOnly; SameSite=Strict,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM1NTQ5ODU2LWFkZGYtNDcxYy04OGU2LTQxMDVjM2ExZTcyMSIsImlhdCI6MTc3MDA0MzczNiwiZXhwIjoxNzcwNjQ4NTM2fQ.sZN-ov6G1QdEJWLF1m0RoZ4cGfxDZadIO9Np5uhFQV4; Max-Age=604800; Path=/; Expires=Mon, 09 Feb 2026 14:48:56 GMT; HttpOnly; SameSite=Strict
+
+
+### Logout
+
+GET http://localhost:3000/api/v1/auth/logout
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM1NTQ5ODU2LWFkZGYtNDcxYy04OGU2LTQxMDVjM2ExZTcyMSIsImlhdCI6MTc3MDA0MzczNiwiZXhwIjoxNzcwMTMwMTM2fQ.mOx_mhe79mr3mdL0WaPPVH_KC6ur7zMT7JtFGp6Vyuk; Max-Age=86400; Path=/; Expires=Tue, 03 Feb 2026 14:48:56 GMT; HttpOnly; SameSite=Strict,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM1NTQ5ODU2LWFkZGYtNDcxYy04OGU2LTQxMDVjM2ExZTcyMSIsImlhdCI6MTc3MDA0MzczNiwiZXhwIjoxNzcwNjQ4NTM2fQ.sZN-ov6G1QdEJWLF1m0RoZ4cGfxDZadIO9Np5uhFQV4; Max-Age=604800; Path=/; Expires=Mon, 09 Feb 2026 14:48:56 GMT; HttpOnly; SameSite=Strict

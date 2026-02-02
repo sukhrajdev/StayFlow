@@ -82,6 +82,18 @@ class AuthService {
         });
     }
 
+    async refreshAccessToken(refreshToken: string) {
+        try {
+            const decoded = TOKEN_PROVIDER.verifyJwt(refreshToken, "REFRESH");
+        
+            const accessToken = TOKEN_PROVIDER.generateAccessToken(decoded.id);
+        
+            return { accessToken };
+            } catch (err: any) {
+            throw new Error("Invalid or expired refresh token.");
+        }
+    }
+
     async logout(res: Response) {
 
         res.clearCookie("accessToken");

@@ -71,10 +71,49 @@ export async function login(req:Request, res:Response) {
 
 export async function getProfile(req:Request,res:Response) {
     try{
+        if(!req.user || !req.user.id){
+            return ApiResponse.error(res,"Unauthorized");
+        }
+
         const userId = req.user.id;
         const user = await authService.getProfile(userId);
         return ApiResponse.success(res,user,"User profile get Successful.",200)
     }catch(err:any){
         return ApiResponse.error(res,"Internal Server error.",500,err.message)
+    }
+}
+
+export async function logout(req:Request,res:Response){
+    authService.logout(res)
+    return ApiResponse.success(res,{},"Logout Successful!",200)
+}
+
+export async function refreshAccessToken(req: Request, res: Response) {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+
+        if (!refreshToken) {
+            return ApiResponse.error(res, "Refresh token missing", 401);
+        }
+
+        const result = await authService.refreshAccessToken(refreshToken);
+
+        if (!result || !result.accessToken) {
+            return ApiResponse.error(res, "Could not refresh token", 401);
+        }
+
+
+        res.cookie("accessToken", result.accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
+        });
+
+        return ApiResponse.success(res, null, "Token refreshed successfully", 200);
+
+    } catch (err: any) {
+        console.error("Refresh Token Error:", err.message);
+        return ApiResponse.error(res, "Session expired, please login again.", 401);
     }
 }

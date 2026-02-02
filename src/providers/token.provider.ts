@@ -1,8 +1,9 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import "dotenv/config"
 
 class TOKEN_PROVIDER {
     // 1. Generate Access Token (Short lived - 1d)
-    generateAccessToken(userId:number){
+    generateAccessToken(userId:string){
         if(!userId){
             throw new Error("User id is not provide.")
         }
@@ -16,7 +17,7 @@ class TOKEN_PROVIDER {
     }
 
     // 2. Generate Refresh Token (Long lived - 7d)
-    generateRefreshToken(userId:number){
+    generateRefreshToken(userId:string){
         if(!userId){
             throw new Error("User id is not provide.")
         }
@@ -31,14 +32,16 @@ class TOKEN_PROVIDER {
     verifyJwt(token: string,secretType: 'ACCESS' | 'REFRESH'){
         try {
             const secret = secretType === "ACCESS" 
-                ? process.env.JWT_ACCESS_TOKEN_SECRET 
-                : process.env.JWT_REFRESH_TOKEN_SECRET;
+                ? process.env.ACCESS_TOKEN_SECRET 
+                : process.env.REFRESH_TOKEN_SECRET;
 
             if (!secret) throw new Error("JWT Secret is missing in .env");
 
             return jwt.verify(token, secret) as { id: string, role: string };
             
         } catch (error: any) {
+            console.log(error.message);
+            
 
             if (error.name === "TokenExpiredError") {
                 throw new Error("Token has expired. Please log in again.");
