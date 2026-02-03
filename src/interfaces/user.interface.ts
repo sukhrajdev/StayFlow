@@ -1,10 +1,9 @@
-export interface IRegisterInput {
-    username: string,
-    email: string,
-    password: string
+export interface IUserUpdate {
+    username?: string;
+    email?: string;
 }
 
-export interface ILoginInput {
-    email: string,
-    password: string
+export interface IForgetPassword {
+    oldPassword: string;
+    newPassword: string
 }

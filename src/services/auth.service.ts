@@ -1,5 +1,5 @@
 import { prisma } from "../config/prisma.config.js";
-import { IRegisterInput,ILoginInput } from "../interfaces/user.interface.js";
+import { IRegisterInput,ILoginInput } from "../interfaces/auth.interface.js";
 import TOKEN_PROVIDER from "../providers/token.provider.js";
 import bcrypt from "bcrypt";
 import { Response } from "express";
