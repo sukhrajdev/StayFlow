@@ -1,6 +1,7 @@
 import express from "express";
 import type {Request,Response} from "express";
 import authRoute from "./routes/auth.routes.js";
+import userRoute from "./routes/user.routes.js";
 import cookieParser from "cookie-parser";
 import "dotenv/config"
 
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cookieParser())
 
 app.use("/api/v1/auth",authRoute)
+app.use("/api/v1/user",userRoute)
 
 app.get('/',(req:Request,res:Response) => {
     res.send("Hello From StayFlow")

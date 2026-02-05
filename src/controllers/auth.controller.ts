@@ -117,3 +117,29 @@ export async function refreshAccessToken(req: Request, res: Response) {
         return ApiResponse.error(res, "Session expired, please login again.", 401);
     }
 }
+
+export async function forgetPassword(req:Request,res:Response){
+    try{
+        if(!req.user || !req.user.id){
+            return ApiResponse.error(res,"Unauthorized",401)
+        }
+        const id = req.user.id;
+        const data = req.body;
+        if(!data.oldPassword || !data.newPassword){
+            return ApiResponse.error(res,"<<< Required fields are not provided.",404)
+        }
+        const user = await authService.forgetPassword(id,data)
+        return ApiResponse.success(res,user,"Forget Password Successful!!.",200)
+    }catch(err:any){
+        if(err.message == "New Password is Weak."){
+            return ApiResponse.error(res,"<<< While forgetting Password Error.. >>>",400,err.message)
+        }
+        if(err.message == "Incorrect Password!"){
+            return ApiResponse.error(res,"<<< While forgetting Password Error.. >>>",401,err.message)
+        }
+        if(err.code = 'P2025'){
+            return ApiResponse.error(res,"<<< While forgetting Password Error.. >>>",404,err.message)
+        }
+        return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
+    }
+}

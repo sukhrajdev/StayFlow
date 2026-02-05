@@ -1,5 +1,6 @@
 import { prisma } from "../config/prisma.config.js";
 import { IRegisterInput,ILoginInput } from "../interfaces/auth.interface.js";
+import { IForgetPassword } from "../interfaces/user.interface.js";
 import TOKEN_PROVIDER from "../providers/token.provider.js";
 import bcrypt from "bcrypt";
 import { Response } from "express";
@@ -99,6 +100,44 @@ class AuthService {
         res.clearCookie("accessToken");
         res.clearCookie("refreshToken");
         return { message: "Logged out successfully" };
+    }
+
+    async forgetPassword(id: string, data: IForgetPassword) {
+    try {
+        if (data.newPassword.length < 8) {
+            throw new Error("New Password is Weak.");
+        }
+
+        const user = await prisma.user.findUnique({ where: { id } });
+        if (!user) {
+            throw new Error("Invalid User ID. User not found.");
+        }
+
+        const isMatchPassword = await bcrypt.compare(data.oldPassword, user.password);
+        if (!isMatchPassword) {
+            throw new Error("Incorrect Password!.");
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(data.newPassword, salt);
+
+        return await prisma.user.update({
+            where: { id },
+            data: { password: hashedPassword },
+            select: {
+                username: true,
+                email: true,
+                updatedAt: true
+            }
+        });
+
+    } catch (err: any) {
+
+        if (err.code === 'P2025') {
+            throw new Error("Invalid User ID. User not found.");
+        }
+        throw err;
+    }
     }
 
 }

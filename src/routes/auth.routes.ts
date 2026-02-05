@@ -4,7 +4,8 @@ import {
     login,
     getProfile,
     logout,
-    refreshAccessToken
+    refreshAccessToken,
+    forgetPassword
 } from "../controllers/auth.controller.js"
 import { JWT_middleware } from "../middlewares/auth.middleware.js";
 
@@ -15,5 +16,6 @@ authRoute.post("/login",login)
 authRoute.get("/me",JWT_middleware,getProfile)
 authRoute.post("/logout",JWT_middleware,logout)
 authRoute.post("/refresh-token",refreshAccessToken)
+authRoute.post('/forget-password',JWT_middleware,forgetPassword)
 
 export default authRoute

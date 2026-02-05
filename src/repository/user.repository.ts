@@ -1,9 +1,9 @@
 import { prisma } from "../config/prisma.config.js";
-import bcrypt from "bcrypt"
-import { IForgetPassword, IUserUpdate } from "../interfaces/user.interface.js";
+import { IUserUpdate } from "../interfaces/user.interface.js";
+import { ROLE } from "../generated/prisma/enums.js";
 
 class UserService {
-    public async updateUser(id: string, data: IUserUpdate) {
+    async updateUser(id: string, data: IUserUpdate) {
 
         try {
             const updatedUser = await prisma.user.update({
@@ -28,31 +28,53 @@ class UserService {
             throw new Error("Invalid User ID. User not found.")
         }
     }
-    public async forgetPassword(id: string,data: IForgetPassword){
+
+    async updateRoleById(id: string,role: ROLE){
         try{
             const user = await prisma.user.findUnique({
                 where: {
                     id
+                },
+                select: {
+                    username: true,
+                    email: true,
+                    isVerified: true,
+                    role: true,
+                    status: true,
+                    createdAt: true,
+                    updatedAt: true
                 }
             })
-            const isMatchPassword = await bcrypt.compare(data.oldPassword,user?.password)
-            if(!isMatchPassword){
-                throw new Error("Incorrect Password!.")
+            if(!user){
+                throw new Error("Account identifier is invalid or the record does not exist.")
             }
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(data.newPassword, salt);
+
+            if(!role){
+                throw new Error("Please provide a valid account role to proceed.")
+            }
+
             return await prisma.user.update({
                 where: {
                     id
                 },
                 data: {
-                    password: hashedPassword
+                    role: role
+                },
+                select: {
+                    username: true,
+                    email: true,
+                    isVerified: true,
+                    role: true,
+                    status: true,
+                    createdAt: true,
+                    updatedAt: true
                 }
             })
-        }catch(err: any){
-            throw new Error("Invalid User ID or User not found.")
+        } catch (error) {
+            throw new Error("Failed to update user role.")
         }
     }
+                                                                      
 }
 
-export default UserService;
+export default new UserService();
