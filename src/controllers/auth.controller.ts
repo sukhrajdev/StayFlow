@@ -77,6 +77,9 @@ export async function getProfile(req:Request,res:Response) {
 
         const userId = req.user.id;
         const user = await authService.getProfile(userId);
+        if(!user){
+            return ApiResponse.error(res,"User Account Not Found.",404)
+        }
         return ApiResponse.success(res,user,"User profile get Successful.",200)
     }catch(err:any){
         return ApiResponse.error(res,"Internal Server error.",500,err.message)
@@ -141,5 +144,35 @@ export async function forgetPassword(req:Request,res:Response){
             return ApiResponse.error(res,"<<< While forgetting Password Error.. >>>",404,err.message)
         }
         return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
+    }
+}
+
+export async function deleteUserById(req: Request, res: Response) {
+    try {
+        const { id } = req.body;
+
+        // 1. Validation check
+        if (!id) {
+            return ApiResponse.error(res, "User identifier is required.", 400);
+        }
+
+        const deletedUser = await authService.deleteUserById(id);
+
+        // 2. Success Response
+        return ApiResponse.success(
+            res, 
+            deletedUser, 
+            "User account has been permanently deleted.", 
+            200
+        );
+
+    } catch (err: any) {
+        // 3. Handle specific "Not Found" error from repository
+        if (err.message === "Account identifier is invalid or the record does not exist.") {
+            return ApiResponse.error(res, err.message, 404);
+        }
+
+        // 4. Global fallback
+        return ApiResponse.error(res, "An unexpected error occurred during deletion.", 500, err.message);
     }
 }

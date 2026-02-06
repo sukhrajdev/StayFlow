@@ -10,8 +10,10 @@ export async function updateUser(req: Request,res:Response){
         }
         const id = req.user?.id;
         const data = req.body;
-        if(!data || data.length === 0){
-            return ApiResponse.error(res,"Required fields are not provide.",400)
+        // Instead of data.length
+        // Instead of data.length
+        if (!data || Object.keys(data).length === 0) {
+            return ApiResponse.error(res, "No data provided for update.", 400);
         }
         const updatedUser = await UserService.updateUser(id as string, data); // Pass the id and body
         return ApiResponse.success(res, updatedUser, "User updated successfully"); // Don't forget to return the response!
@@ -44,6 +46,8 @@ export async function updateRoleById(req: Request, res: Response) {
         return ApiResponse.success(res, updatedRole, "Role updated successfully!", 200);
 
     } catch (err: any) {
+        console.log(err.message);
+        
         // Handle specific repository errors
         const isKnownError = [
             "Account identifier is invalid or the record does not exist.",

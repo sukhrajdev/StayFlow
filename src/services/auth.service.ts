@@ -140,6 +140,25 @@ class AuthService {
     }
     }
 
+   async deleteUserById(id: string) {
+    try {
+        return await prisma.user.delete({
+            where: { id },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                role: true,
+                isVerified: true
+            }
+        });
+    } catch (err: any) {
+        if (err.code === 'P2025') {
+            throw new Error("Account identifier is invalid or the record does not exist.");
+        }
+        throw err;
+    }
+}
 }
 
 export default new AuthService();

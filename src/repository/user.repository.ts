@@ -74,7 +74,10 @@ class UserService {
             throw new Error("Failed to update user role.")
         }
     }
-                                                                      
+               
+    async ChangeStatusById(id: string){
+        
+    }
 }
 
 export default new UserService();
