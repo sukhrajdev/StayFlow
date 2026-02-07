@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
     "email":"testgmil@gmail.com",
-    "password":"rajtest56"
+    "password":"stayflow"
 }
 
 ### GET Profile
@@ -47,7 +47,7 @@ Content-Type: application/json
 }
 
 ### Update user Role By iD
-PATCH http://localhost:3000/api/v1/user/c5549856-addf-471c-88e6-4105c3a1e721/role/
+PATCH http://localhost:3000/api/v1/user/cc4b2ac7-adca-4ff4-b3f7-d16d7dbec451/role
 Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNjNGIyYWM3LWFkY2EtNGZmNC1iM2Y3LWQxNmQ3ZGJlYzQ1MSIsImlhdCI6MTc3MDM5MDYxNCwiZXhwIjoxNzcwNDc3MDE0fQ.K4hLzs2l-HjTHOC7zqDhS_WAq71N-rPCQ7XkQgdjAFk; Max-Age=86400; Path=/; Expires=Sat, 07 Feb 2026 15:10:14 GMT; HttpOnly; SameSite=Strict,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNjNGIyYWM3LWFkY2EtNGZmNC1iM2Y3LWQxNmQ3ZGJlYzQ1MSIsImlhdCI6MTc3MDM5MDYxNCwiZXhwIjoxNzcwOTk1NDE0fQ.P72Fuoz0LUhXA_0Ghegn0tMaJFFLKJ9EKuKcOMOTecE; Max-Age=604800; Path=/; Expires=Fri, 13 Feb 2026 15:10:14 GMT; HttpOnly; SameSite=Strict
 Content-Type: application/json
 
@@ -63,4 +63,13 @@ Content-Type: application/json
 
 {
     "id": "c5549856-addf-471c-88e6-4105c3a1e721"
+}
+
+### Update Status ById
+PATCH http://localhost:3000/api/v1/user/cc4b2ac7-adca-4ff4-b3f7-d16d7dbec451/status
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNjNGIyYWM3LWFkY2EtNGZmNC1iM2Y3LWQxNmQ3ZGJlYzQ1MSIsImlhdCI6MTc3MDQ3NDkwNywiZXhwIjoxNzcwNTYxMzA3fQ.rn5DWOyhHXiFVs0mAdNVvkwS4-xDhtBP3gArafx5oms; Max-Age=86400; Path=/; Expires=Sun, 08 Feb 2026 14:35:07 GMT; HttpOnly; SameSite=Strict,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNjNGIyYWM3LWFkY2EtNGZmNC1iM2Y3LWQxNmQ3ZGJlYzQ1MSIsImlhdCI6MTc3MDQ3NDkwNywiZXhwIjoxNzcxMDc5NzA3fQ.PiZhcKoM0nGhrO1BfYAvpzts8pG15KfOJqjWxV9jOyM; Max-Age=604800; Path=/; Expires=Sat, 14 Feb 2026 14:35:07 GMT; HttpOnly; SameSite=Strict
+Content-Type: application/json
+
+{
+    "status": "Active"
 }

@@ -1,1 +1,1 @@
-export type userStatus = 'Active' | 'Banned' | 'Suspended';
+export type userStatus = 'ACTIVE' | 'BANNED' | 'SUSPENDED';

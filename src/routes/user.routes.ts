@@ -1,7 +1,11 @@
 import express from "express";
 import {
     updateUser,
-    updateRoleById
+    updateRoleById,
+    UpdateStatusById,
+    searchUsers,
+    getAllUsers
+    
 } from "../controllers/user.controller.js";
 import { JWT_middleware } from "../middlewares/auth.middleware.js";
 import { isAdmin } from "../middlewares/role.middleware.js";
@@ -9,10 +13,18 @@ import { isActive } from "../middlewares/status.middleware.js";
 const userRoute = express.Router()
 
 userRoute.put('/',JWT_middleware,isActive,updateUser)
-userRoute.patch('/:id/role/',
+userRoute.patch('/:id/role',
     JWT_middleware,
     isAdmin,
     isActive,
     updateRoleById)
+userRoute.patch('/:id/status',
+    JWT_middleware,
+    isAdmin,
+    UpdateStatusById
+)    
+
+userRoute.get("/search", JWT_middleware, isAdmin, searchUsers);
+userRoute.get("/", JWT_middleware, isAdmin, getAllUsers);
 
 export default userRoute
