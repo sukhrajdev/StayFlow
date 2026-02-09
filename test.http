@@ -73,3 +73,27 @@ Content-Type: application/json
 {
     "status": "Active"
 }
+
+### Create Room 
+POST http://localhost:3000/api/v1/hotel/
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNjNGIyYWM3LWFkY2EtNGZmNC1iM2Y3LWQxNmQ3ZGJlYzQ1MSIsImlhdCI6MTc3MDY1MDU0MiwiZXhwIjoxNzcwNzM2OTQyfQ.duYFx_XHQ-LYA3u-LRupe23NQaEoWU2sGtRssDxFrGsEzpvRzi; Max-Age=86400; Path=/; Expires=Tue, 10 Feb 2026 15:22:22 GMT; HttpOnly; SameSite=Strict,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNjNGIyYWM3LWFkY2EtNGZmNC1iM2Y3LWQxNmQ3ZGJlYzQ1MSIsImlhdCI6MTc3MDY1MDU0MiwiZXhwIjoxNzcxMjU1MzQyfQ.GWTFFdRmyFYa9Q2Ny3Qxg4MmQc7221xCncOHlPhfI28; Max-Age=604800; Path=/; Expires=Mon, 16 Feb 2026 15:22:22 GMT; HttpOnly; SameSite=Strict
+Content-Type: application/json
+
+{
+    "name": "Relvence Hotel",
+    "location": "Delhi,1245",
+    "city": "Delhi",
+    "contactEmail": "sukhrajgamer0@gmail.com",
+    "contactPhone": "+91 111111111"
+}
+
+### Test Room Photo Upload
+PATCH http://localhost:3000/api/v1/hotel/cmlfbqir70000l4780gd4h5g8/image
+Content-Type: multipart/form-data; boundary=----MyBoundary
+
+------MyBoundary
+Content-Disposition: form-data; name="hotelIMG"; filename="example.png"
+Content-Type: image/png
+
+< ./example.png
+------MyBoundary--

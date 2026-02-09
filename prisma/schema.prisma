@@ -66,7 +66,7 @@ model Hotel {
 
 model Room {
   id          String   @id @default(cuid())
-  roomNumber  String
+  roomNumber  Int
   type        String
   price       Int
   isBooked    Boolean  @default(false)

@@ -1,0 +1,69 @@
+import HotelService from "../services/hotel.service.js";
+import type { Request,Response } from "express";
+import { ApiResponse } from "../utils/ApiResponse.utils.js";
+import { IHotel } from "../interfaces/hotel.interface.js";
+
+
+export async function createHotel(req:Request,res:Response) {
+    try{
+        const id = req.user?.id;
+        if (!id) {
+            return ApiResponse.error(res, "<<< Unauthorized >>>", 401);
+        }
+        const data:IHotel = req.body;
+
+        const newHotel = await HotelService.createHotel(id,data)
+
+        return ApiResponse.success(
+            res, 
+            newHotel, 
+            "Hotel registration completed successfully.", 
+            201 
+        );
+    }catch(err:any){
+
+        if(err.message == "Account identifier is invalid or the record does not exist."){
+            return ApiResponse.error(res,"<<< Not Found >>>",404,err.message)
+        }
+
+        if(err.message == "A hotel with this name already exists under your account."){
+            return ApiResponse.error(res,"<<< Already Exists >>>",409,err.message)
+        }
+
+        if(err.message == "You do not have the required permissions to register a hotel."){
+            return ApiResponse.error(res,"<<< Missing Permissions >>>",403,err.message)
+        }
+
+        if(err.message == "The specified owner does not exist."){
+            return ApiResponse.error(res,"<<< Does Not Exist >>>",400,err.message)
+        }
+        return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
+    }
+}
+
+export async function updateHotelImage(req:Request,res:Response){
+    try{
+
+        if(!req.file || !req.file?.path){
+            return ApiResponse.error(res,"<<< IMAGE NOT FOUND >>>",404)
+        }
+        
+        const {hotelId} = req.params;
+        if (typeof hotelId !== 'string') {
+            return ApiResponse.error(res, "Invalid identifier format provided.", 400);
+        }
+
+        const filePath = req.file?.path
+
+
+        const updatedHotel = await HotelService.updateHotelImage(hotelId,filePath as string)
+
+        return ApiResponse.success(res,updatedHotel,"<<< Update Hotel Image Successful! >>>",200)
+    }catch(err:any){
+        if(err.message == "Hotel identifier is invalid or the record does not exist."){
+            return ApiResponse.error(res,"<<< Invaild Request >>>",400,err.message)
+        }
+
+        return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
+    }
+}
