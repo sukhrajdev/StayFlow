@@ -6,7 +6,7 @@ class HotelService{
     public async createHotel(ownerId:string,data:IHotel){
         try{
             const owner = await prisma.user.findUnique({
-            where: { id: ownerId }
+            where: { id: ownerId },
         });
 
         if (!owner) {
@@ -47,7 +47,21 @@ class HotelService{
                 },
                 data: {
                     imageUrl
-                }
+                },
+                select: {
+                id: true,
+                name: true,
+                description: true,
+                location: true,
+                city: true,
+                rating: true,
+                contactEmail: true,
+                contactPhone: true,
+                imageUrl: true,
+                ownerId: true,
+                rooms: true,
+                updatedAt: true
+            }
             })
             
 
@@ -57,6 +71,93 @@ class HotelService{
             }
             throw new Error(err)
         }
+    }
+
+    public async getHotelDetailsById(hotelId:string){
+        return await prisma.hotel.findUnique({
+            where: {id:hotelId},
+            select: {
+                id: true,
+                name: true,
+                description: true,
+                location: true,
+                city: true,
+                rating: true,
+                contactEmail: true,
+                contactPhone: true,
+                imageUrl: true,
+                ownerId: true,
+                rooms: true,
+                createdAt: true
+            }
+        })
+    }
+
+    public async updateHotel(hotelId:string,data:IHotel){
+        try{
+        const updatedHotel = await prisma.hotel.update(
+            {
+                where: {id: hotelId},
+                data: {
+                    ...(data.name && {name: data.name}),
+                    ...(data.description && {description: data.description}),
+                    ...(data.location && {location: data.location}),
+                    ...(data.city && {city: data.city}),
+                    ...(data.contactEmail && {city: data.contactEmail}),
+                    ...(data.contactPhone && {city: data.contactPhone})
+                },
+                select: {
+                id: true,
+                name: true,
+                description: true,
+                location: true,
+                city: true,
+                rating: true,
+                contactEmail: true,
+                contactPhone: true,
+                imageUrl: true,
+                ownerId: true,
+                rooms: true,
+                updatedAt: true
+            }
+            }
+            
+        )
+        return updatedHotel
+    }catch(err:any){
+        if(err.code == "P2025"){
+                throw new Error("Hotel identifier is invalid or the record does not exist.")
+        }
+        throw err;
+    }
+    }
+
+
+    public async searchHotel(query:string){
+        return await prisma.hotel.findMany({
+            where: {
+                OR: [
+                    {name: {contains: query, mode:'insensitive'}},
+                    {city: {contains: query, mode:'insensitive'}},
+                    {location: {contains: query, mode:'insensitive'}}
+                ]
+            },
+            select: {
+                id: true,
+                name: true,
+                description: true,
+                location: true,
+                city: true,
+                rating: true,
+                contactEmail: true,
+                contactPhone: true,
+                imageUrl: true,
+                ownerId: true,
+                rooms: true,
+                createdAt: true
+            }
+
+        })
     }
 }
 

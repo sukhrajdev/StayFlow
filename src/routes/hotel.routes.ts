@@ -1,7 +1,11 @@
 import express from "express";
 import {
     createHotel,
-    updateHotelImage
+    updateHotelImage,
+    getHotelDetailsById,
+    updateHotel,
+    searchHotel
+    
 } from "../controllers/hotel.controller.js";
 import { JWT_middleware } from "../middlewares/auth.middleware.js";
 import { isAdmin } from "../middlewares/role.middleware.js";
@@ -22,5 +26,20 @@ hotelRoute.patch("/:hotelId/image",
     updateHotelImage
 )
 
+hotelRoute.get("/:hotelId/",
+    JWT_middleware,
+    getHotelDetailsById
+)
+
+hotelRoute.put("/:hotelId/",
+    JWT_middleware,
+    isAdmin,
+    updateHotel
+)
+
+hotelRoute.get("/",
+    JWT_middleware,
+    searchHotel
+)
 
 export default hotelRoute

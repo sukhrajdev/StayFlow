@@ -67,3 +67,51 @@ export async function updateHotelImage(req:Request,res:Response){
         return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
     }
 }
+
+export async function getHotelDetailsById(req:Request,res:Response){
+    try{
+        const {hotelId} = req.params;
+        if (typeof hotelId !== 'string') {
+            return ApiResponse.error(res, "Invalid identifier format provided.", 400);
+        }
+        const hotel = await HotelService.getHotelDetailsById(hotelId)
+        return ApiResponse.success(res,hotel,"<<< Successful Extract Hotel Data >>>",200)
+    }catch(err:any){
+        return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
+    }
+}
+
+export async function updateHotel(req:Request,res:Response){
+    try{
+        const {hotelId} = req.params;
+        if (typeof hotelId !== 'string') {
+            return ApiResponse.error(res, "Invalid identifier format provided.", 400);
+        }
+        const data:IHotel = req.body;
+        const updatedHotel = await HotelService.updateHotel(hotelId,data)
+
+        return ApiResponse.success(res,updatedHotel,"<<< Hotel Updated Successful!! >>>",200)
+    }catch(err:any){
+        if(err.message == ("Hotel identifier is invalid or the record does not exist.")){
+            return ApiResponse.error(res,"<<< Invaild Request >>>",400,err.message)
+        }
+        return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
+    }
+}
+
+export async function searchHotel(req:Request,res:Response){
+    try{
+        const query = req.query;
+        
+        if(!query || typeof query !== "string"){
+            return ApiResponse.error(res,"<<< Invaild Query >>>",400)
+        }
+
+        const searchedHotel = await HotelService.searchHotel(query)
+
+        return ApiResponse.success(res,searchedHotel,"<<< Search Result >>>",200)
+    }catch(err:any){
+        return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
+    }
+}
+

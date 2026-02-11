@@ -6,3 +6,4 @@ export interface IHotel{
     contactEmail: string;
     contactPhone: string;
 }
+
