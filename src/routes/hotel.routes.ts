@@ -4,7 +4,9 @@ import {
     updateHotelImage,
     getHotelDetailsById,
     updateHotel,
-    searchHotel
+    searchHotel,
+    getAllHotel,
+    deleteHotel
     
 } from "../controllers/hotel.controller.js";
 import { JWT_middleware } from "../middlewares/auth.middleware.js";
@@ -39,7 +41,17 @@ hotelRoute.put("/:hotelId/",
 
 hotelRoute.get("/",
     JWT_middleware,
+    getAllHotel
+)
+
+hotelRoute.get("/search",
+    JWT_middleware,
     searchHotel
+)
+
+hotelRoute.delete("/:hotelId/",
+    JWT_middleware,
+    deleteHotel
 )
 
 export default hotelRoute

@@ -159,6 +159,34 @@ class HotelService{
 
         })
     }
+
+    public async deleteHotel(hotelId:string,ownerId:string){
+        try{
+        const hotel = await prisma.hotel.findUnique({
+            where: {
+                id:hotelId
+            }
+        })
+        if(!hotel){
+            throw new Error("Hotel Idenitifed is Invaild or not Found.")
+        }
+        if(hotel.ownerId !== ownerId){
+            throw new Error("Owner Id is Invaild.")
+        }
+        return hotel
+    }catch(err:any){
+        throw new Error(err.message)
+    }
+    }
+
+    public async getAllHotels(){
+        try{
+            return await prisma.hotel.findMany();
+        }catch(err:any){
+            throw new Error(err.message)
+        }
+    }
+
 }
 
 export default new HotelService()

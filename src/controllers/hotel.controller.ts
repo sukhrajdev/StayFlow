@@ -115,3 +115,37 @@ export async function searchHotel(req:Request,res:Response){
     }
 }
 
+export async function deleteHotel(req:Request,res:Response){
+    try{
+        if(!req.user || !req.user.id){
+            return ApiResponse.error(res,"<<< Unauthorized >>>",401)
+        }
+        const id = req.user?.id;
+        const {hotelId} = req.params;
+
+        if(typeof hotelId !== "string"){
+            return ApiResponse.error(res,"<<< Invaild Hotel Id Format >>>",400);
+        }
+
+        const deletedHotel = await HotelService.deleteHotel(hotelId,id);
+        return ApiResponse.success(res,deletedHotel,"<<< Delete Hotel Successful >>>",200)
+    }catch(err:any){
+        if(err.message === "Hotel Idenitifed is Invaild or not Found."){
+            return ApiResponse.error(res,"<<< Invaild Request >>>",400,err.message)
+        }
+        if(err.message == "Owner Id is Invaild."){
+            return ApiResponse.error(res,"<<< Invaild Request >>>",400,err.message)
+
+        }
+        return ApiResponse.error(res,"<<<Internal Server Error >>>",500,err.message)
+    }
+}
+
+export async function getAllHotel(req:Request,res:Response) {
+    try{
+        const hotels = await HotelService.getAllHotels()
+        return ApiResponse.success(res,hotels,"<<< Get Hotels Successful",200)
+    }catch(err:any){
+        return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
+    }
+}
