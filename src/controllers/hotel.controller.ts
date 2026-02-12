@@ -101,13 +101,9 @@ export async function updateHotel(req:Request,res:Response){
 
 export async function searchHotel(req:Request,res:Response){
     try{
-        const query = req.query;
-        
-        if(!query || typeof query !== "string"){
-            return ApiResponse.error(res,"<<< Invaild Query >>>",400)
-        }
+        const q = (req.query.q as string) || "";
 
-        const searchedHotel = await HotelService.searchHotel(query)
+        const searchedHotel = await HotelService.searchHotel(q)
 
         return ApiResponse.success(res,searchedHotel,"<<< Search Result >>>",200)
     }catch(err:any){
@@ -145,6 +141,15 @@ export async function getAllHotel(req:Request,res:Response) {
     try{
         const hotels = await HotelService.getAllHotels()
         return ApiResponse.success(res,hotels,"<<< Get Hotels Successful",200)
+    }catch(err:any){
+        return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
+    }
+}
+
+export async function mostRateHotel(req:Request,res:Response) {
+    try{
+        const hotels = await HotelService.mostRateHotels()
+        return ApiResponse.success(res,hotels,"<<< Extract Hotels Successful",200)
     }catch(err:any){
         return ApiResponse.error(res,"<<< Internal Server Error >>>",500,err.message)
     }

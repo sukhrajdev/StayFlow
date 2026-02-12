@@ -1,0 +1,49 @@
+### Create Room 
+POST http://localhost:3000/api/v1/hotel/
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNjNGIyYWM3LWFkY2EtNGZmNC1iM2Y3LWQxNmQ3ZGJlYzQ1MSIsImlhdCI6MTc3MDg5NDA5MSwiZXhwIjoxNzcwOTgwNDkxfQ.IUE-fiXHb6HaJdBPD19omNe2yLpqSkMeaiRAV6zTKvc; Max-Age=86400; Path=/; Expires=Fri, 13 Feb 2026 11:01:31 GMT; HttpOnly; SameSite=Strict,refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNjNGIyYWM3LWFkY2EtNGZmNC1iM2Y3LWQxNmQ3ZGJlYzQ1MSIsImlhdCI6MTc3MDg5NDA5MSwiZXhwIjoxNzcxNDk4ODkxfQ.bfXNYnwbYvZ4qkyIw3FxU3Roj0s-L-j5iriBcOzQUZo; Max-Age=604800; Path=/; Expires=Thu, 19 Feb 2026 11:01:31 GMT; HttpOnly; SameSite=Strict
+Content-Type: application/json
+
+{
+    "name": "Raja Motel",
+    "location": "Delhi,1245",
+    "city": "Delhi",
+    "contactEmail": "sukhrajgamer0@gmail.com",
+    "contactPhone": "+91 111111111"
+}
+
+### Test Room Photo Upload
+# Bug Without Token Update
+PATCH http://localhost:3000/api/v1/hotel/cmljcnfix00003b78it0p9nxd/image
+Content-Type: multipart/form-data; boundary=----MyBoundary
+
+------MyBoundary
+Content-Disposition: form-data; name="hotelIMG"; filename="example.png"
+Content-Type: image/png
+
+< ./example.png
+------MyBoundary--
+
+### GET Hotel By Id
+
+GET http://localhost:3000/api/v1/hotel/cmljcnfix00003b78it0p9nxd/
+
+### Update Hotel By Id
+# Error without Token Work
+PUT http://localhost:3000/api/v1/hotel/cmljcnfix00003b78it0p9nxd/
+Content-Type: application/json
+
+{
+    "description": "This is a world High Class Hotel Owned By Sukhraj"
+}
+
+### Get all Hotels 
+GET http://localhost:3000/api/v1/hotel/
+
+### Search Hotels by Name, City, or Location
+GET http://localhost:3000/api/v1/hotel/search?q=Delhi
+Content-Type: application/json
+
+### Example Search 2: Search by partial name
+GET http://localhost:3000/api/v1/hotel/search?q=Relvence
+
+### 

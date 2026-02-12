@@ -133,32 +133,19 @@ class HotelService{
     }
 
 
-    public async searchHotel(query:string){
-        return await prisma.hotel.findMany({
-            where: {
-                OR: [
-                    {name: {contains: query, mode:'insensitive'}},
-                    {city: {contains: query, mode:'insensitive'}},
-                    {location: {contains: query, mode:'insensitive'}}
-                ]
-            },
-            select: {
-                id: true,
-                name: true,
-                description: true,
-                location: true,
-                city: true,
-                rating: true,
-                contactEmail: true,
-                contactPhone: true,
-                imageUrl: true,
-                ownerId: true,
-                rooms: true,
-                createdAt: true
-            }
-
-        })
-    }
+    public async searchHotel(query: string) {
+    const hotels = await prisma.hotel.findMany({
+        where: {
+            OR: [
+                { name: { contains: query, mode: 'insensitive' } },
+                { city: { contains: query, mode: 'insensitive' } },
+                { location: { contains: query, mode: 'insensitive' } }
+            ]
+        },
+ 
+    });
+    return hotels; // Ensure this is not wrapped in another object here
+}
 
     public async deleteHotel(hotelId:string,ownerId:string){
         try{
@@ -187,6 +174,16 @@ class HotelService{
         }
     }
 
+    public async mostRateHotels(){
+        try{
+            return await prisma.hotel.findMany({
+                
+                orderBy: [{rating: "desc"}]
+            })
+        }catch(err:any){
+            throw new Error(err.message)
+        }
+    }
 }
 
 export default new HotelService()

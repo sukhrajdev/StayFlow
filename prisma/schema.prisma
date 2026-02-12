@@ -25,6 +25,14 @@ enum STATUS {
   SUSPENDED
 }
 
+enum RoomType {
+  SINGLE
+  DOUBLE
+  DELUXE
+  SUPER_DELUXE
+  SUITE
+}
+
 model User {
   id           String   @id @default(uuid())
   username     String   @unique
@@ -66,9 +74,9 @@ model Hotel {
 
 model Room {
   id          String   @id @default(cuid())
-  roomNumber  Int
-  type        String
-  price       Int
+  roomNumber  Int @unique
+  type        RoomType @default(SINGLE)
+  price       Float 
   isBooked    Boolean  @default(false)
   rating      Float    @default(0.0)
   image       String?

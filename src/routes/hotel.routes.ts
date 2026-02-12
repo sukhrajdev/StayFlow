@@ -6,7 +6,8 @@ import {
     updateHotel,
     searchHotel,
     getAllHotel,
-    deleteHotel
+    deleteHotel,
+    mostRateHotel
     
 } from "../controllers/hotel.controller.js";
 import { JWT_middleware } from "../middlewares/auth.middleware.js";
@@ -14,6 +15,8 @@ import { isAdmin } from "../middlewares/role.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
 const hotelRoute = express.Router()
+
+hotelRoute.get("/search", searchHotel);
 
 hotelRoute.post("/",
     JWT_middleware,
@@ -29,7 +32,6 @@ hotelRoute.patch("/:hotelId/image",
 )
 
 hotelRoute.get("/:hotelId/",
-    JWT_middleware,
     getHotelDetailsById
 )
 
@@ -40,13 +42,12 @@ hotelRoute.put("/:hotelId/",
 )
 
 hotelRoute.get("/",
-    JWT_middleware,
     getAllHotel
 )
 
-hotelRoute.get("/search",
-    JWT_middleware,
-    searchHotel
+
+hotelRoute.get("/trends",
+    mostRateHotel
 )
 
 hotelRoute.delete("/:hotelId/",
