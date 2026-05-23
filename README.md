@@ -20,9 +20,10 @@ StayFlow is a high-performance, scalable backend solution for hotel management s
 * **Cloud Storage:** Cloudinary
 
 ## 🤝 Support & Acknowledgements
-This project was built with a lot of passion and dedication to clean code and modern backend architecture. Thank you to everyone who supports the open-source development of this engine. 
+This project was built with a lot of passion and dedication to clean code and modern backend architecture. Thank you to everyone who supports the open-source development of this engine. Thanks to all for supporting me in completing that project.
 
 ## 👨‍💻 Author
+
 **sukhrajdev** 
 ## 📄 License
 This project is licensed under the MIT License.
